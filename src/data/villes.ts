@@ -14,6 +14,11 @@ export interface Ville {
   nom: string;
   slug: string;
   region: string;
+  departement: string;       // Nouveau — utilisé dans les schemas
+  codePostal: string;        // Nouveau — LocalBusiness schema
+  pays: string;              // Nouveau — LocalBusiness schema
+  latitude: number;          // Nouveau — GeoCoordinates schema
+  longitude: number;         // Nouveau — GeoCoordinates schema
   intro: string;
   pointsInteret: string[];
   faq: FAQItem[];
@@ -25,6 +30,11 @@ export const villes: Ville[] = [
     nom: "Bordeaux",
     slug: "vtc-bordeaux",
     region: "Nouvelle-Aquitaine",
+    departement: "Gironde",
+    codePostal: "33000",
+    pays: "FR",
+    latitude: 44.8378,
+    longitude: -0.5792,
     intro: "Bordeaux, capitale du vin et ville d'art et d'histoire, attire chaque année de nombreux voyageurs. Que vous arriviez à l'aéroport de Bordeaux-Mérignac, à la gare Saint-Jean ou que vous ayez besoin d'un transfert vers le bassin d'Arcachon, PhoneMyVTC assure votre prise en charge avec confort et ponctualité. Notre service couvre l'ensemble de la métropole bordelaise, de jour comme de nuit, sur réservation.",
     pointsInteret: [
       "Aéroport Bordeaux-Mérignac",
@@ -78,6 +88,11 @@ export const villes: Ville[] = [
     nom: "Arcachon",
     slug: "vtc-arcachon",
     region: "Nouvelle-Aquitaine",
+    departement: "Gironde",
+    codePostal: "33120",
+    pays: "FR",
+    latitude: 44.6612,
+    longitude: -1.1679,
     intro: "Arcachon et son célèbre bassin sont une destination prisée toute l'année, entre la Dune du Pilat, les plages et les villages ostréicoles. PhoneMyVTC vous propose un service de chauffeur privé pour rejoindre Arcachon depuis Bordeaux, l'aéroport de Mérignac ou la gare de La Teste-de-Buch, sans stress ni attente. Profitez d'un trajet confortable et réservé à l'avance.",
     pointsInteret: [
       "Dune du Pilat",
@@ -117,6 +132,11 @@ export const villes: Ville[] = [
     nom: "Lyon",
     slug: "vtc-lyon",
     region: "Auvergne-Rhône-Alpes",
+    departement: "Rhône",
+    codePostal: "69000",
+    pays: "FR",
+    latitude: 45.7640,
+    longitude: 4.8357,
     intro: "Lyon, grande métropole économique française, est un carrefour incontournable entre Paris, le Sud et l'Europe. Que vous ayez besoin d'un transfert depuis l'aéroport Saint-Exupéry, d'une prise en charge à la gare de la Part-Dieu ou Perrache, ou d'un VTC pour vos déplacements professionnels, PhoneMyVTC est disponible sur réservation pour vous accompagner avec ponctualité et confort.",
     pointsInteret: [
       "Aéroport Lyon Saint-Exupéry",
@@ -166,6 +186,11 @@ export const villes: Ville[] = [
     nom: "Périgueux",
     slug: "vtc-perigueux",
     region: "Nouvelle-Aquitaine",
+    departement: "Dordogne",
+    codePostal: "24000",
+    pays: "FR",
+    latitude: 45.1836,
+    longitude: 0.7214,
     intro: "Périgueux, cœur historique de la Dordogne et capitale du Périgord, est une ville à taille humaine idéalement située entre Bordeaux et Brive. PhoneMyVTC assure vos transferts depuis la gare de Périgueux, vers l'aéroport de Bergerac ou Bordeaux-Mérignac, ainsi que vos déplacements professionnels et personnels dans l'agglomération périgourdine et ses environs.",
     pointsInteret: [
       "Gare de Périgueux",
@@ -206,6 +231,11 @@ export const villes: Ville[] = [
     nom: "Strasbourg",
     slug: "vtc-strasbourg",
     region: "Grand Est",
+    departement: "Bas-Rhin",
+    codePostal: "67000",
+    pays: "FR",
+    latitude: 48.5734,
+    longitude: 7.7521,
     intro: "Strasbourg, capitale européenne, accueille chaque année de nombreux voyageurs d'affaires et touristes. PhoneMyVTC propose un service de chauffeur VTC pour vos transferts depuis l'aéroport de Strasbourg-Entzheim, la gare centrale ou les principaux quartiers d'affaires, vers toutes les communes de l'Eurométropole alsacienne.",
     pointsInteret: [
       "Aéroport Strasbourg-Entzheim",
@@ -249,6 +279,11 @@ export const villes: Ville[] = [
     nom: "Poitiers",
     slug: "vtc-poitiers",
     region: "Nouvelle-Aquitaine",
+    departement: "Vienne",
+    codePostal: "86000",
+    pays: "FR",
+    latitude: 46.5802,
+    longitude: 0.3404,
     intro: "Poitiers, ville universitaire et carrefour entre Paris, Bordeaux et Nantes, accueille aussi bien les voyageurs d'affaires que les familles en visite. PhoneMyVTC assure vos transferts depuis la gare TGV de Poitiers, vers le Futuroscope ou l'aéroport de Poitiers-Biard, ainsi que vos déplacements dans le Grand Poitiers et ses communes environnantes.",
     pointsInteret: [
       "Gare TGV de Poitiers",
@@ -288,6 +323,11 @@ export const villes: Ville[] = [
     nom: "Tours",
     slug: "vtc-tours",
     region: "Centre-Val de Loire",
+    departement: "Indre-et-Loire",
+    codePostal: "37000",
+    pays: "FR",
+    latitude: 47.3941,
+    longitude: 0.6848,
     intro: "Tours, porte d'entrée du Val de Loire, est une ville dynamique entre patrimoine, tourisme et activité économique. PhoneMyVTC vous accompagne depuis la gare de Tours ou Saint-Pierre-des-Corps, vers l'aéroport de Tours Val de Loire, les châteaux de la Loire ou toute autre destination en Touraine, avec un service professionnel sur réservation.",
     pointsInteret: [
       "Gare de Tours",
@@ -327,6 +367,11 @@ export const villes: Ville[] = [
     nom: "Angoulême",
     slug: "vtc-angouleme",
     region: "Nouvelle-Aquitaine",
+    departement: "Charente",
+    codePostal: "16000",
+    pays: "FR",
+    latitude: 45.6498,
+    longitude: 0.1561,
     intro: "Angoulême, ville d'histoire et carrefour entre Bordeaux et Poitiers, attire aussi bien les professionnels que les visiteurs. PhoneMyVTC vous propose un service de chauffeur VTC pour vos transferts depuis la gare d'Angoulême, vers Cognac, Bordeaux-Mérignac ou toute autre destination, ainsi que pour vos déplacements dans le Grand Angoulême.",
     pointsInteret: [
       "Gare d'Angoulême",
@@ -365,6 +410,11 @@ export const villes: Ville[] = [
     nom: "Paris",
     slug: "vtc-paris",
     region: "Île-de-France",
+    departement: "Paris",
+    codePostal: "75000",
+    pays: "FR",
+    latitude: 48.8566,
+    longitude: 2.3522,
     intro: "Paris concentre un trafic intense et des besoins en transport à toute heure, entre aéroports, gares, quartiers d'affaires et événements. PhoneMyVTC assure vos transferts depuis Roissy-Charles de Gaulle, Orly et les grandes gares parisiennes, ainsi que vos déplacements professionnels et personnels dans Paris et sa petite couronne, avec réservation à l'avance et tarif communiqué avant la course.",
     pointsInteret: [
       "Aéroport Roissy-CDG",
@@ -415,6 +465,11 @@ export const villes: Ville[] = [
     nom: "Toulouse",
     slug: "vtc-toulouse",
     region: "Occitanie",
+    departement: "Haute-Garonne",
+    codePostal: "31000",
+    pays: "FR",
+    latitude: 43.6047,
+    longitude: 1.4442,
     intro: "Toulouse, grande métropole du Sud-Ouest et capitale européenne de l'aéronautique, génère de nombreux besoins de transport chaque jour. PhoneMyVTC vous accompagne depuis l'aéroport Toulouse-Blagnac, les gares toulousaines ou les principaux pôles d'activité, pour vos trajets professionnels, personnels ou vos transferts sur réservation dans toute la métropole.",
     pointsInteret: [
       "Aéroport Toulouse-Blagnac",

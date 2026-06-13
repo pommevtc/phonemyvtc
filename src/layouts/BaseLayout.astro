@@ -7,6 +7,7 @@ interface Props {
   canonical: string;
   schema?: object;
   schemaFAQ?: object;
+  schemaBreadcrumb?: object;
 }
 
 const {
@@ -14,17 +15,20 @@ const {
   description,
   canonical,
   schema,
-  schemaFAQ
+  schemaFAQ,
+  schemaBreadcrumb,
 } = Astro.props as Props;
 
 const siteName = 'PhoneMyVTC';
+const siteUrl = 'https://phonemyvtc.com';
 const bookingUrl = 'https://phonemevtc.libertyorder.fr/estimation';
+const ogImage = `${siteUrl}/og-image.webp`;
 
 const normalizedTitle = title?.trim() || `${siteName} — Chauffeur VTC en France`;
 const normalizedDescription =
   description?.trim() ||
   `${siteName}, votre service de chauffeur VTC professionnel en France.`;
-const normalizedCanonical = canonical?.trim() || 'https://phonemyvtc.com/';
+const normalizedCanonical = canonical?.trim() || `${siteUrl}/`;
 
 const fullTitle = normalizedTitle.includes(siteName)
   ? normalizedTitle
@@ -40,26 +44,45 @@ const fullTitle = normalizedTitle.includes(siteName)
     <title>{fullTitle}</title>
     <meta name="description" content={normalizedDescription} />
     <link rel="canonical" href={normalizedCanonical} />
-    <meta name="robots" content="index, follow" />
 
+    <!-- Robots -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow" />
+
+    <!-- Open Graph -->
     <meta property="og:title" content={normalizedTitle} />
     <meta property="og:description" content={normalizedDescription} />
     <meta property="og:url" content={normalizedCanonical} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content={siteName} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${siteName} — Chauffeur VTC professionnel`} />
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={normalizedTitle} />
     <meta name="twitter:description" content={normalizedDescription} />
+    <meta name="twitter:image" content={ogImage} />
 
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang="fr" href={normalizedCanonical} />
+    <link rel="alternate" hreflang="x-default" href={normalizedCanonical} />
+
+    <!-- JSON-LD Schemas -->
     {schema && (
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     )}
     {schemaFAQ && (
       <script type="application/ld+json" set:html={JSON.stringify(schemaFAQ)} />
     )}
+    {schemaBreadcrumb && (
+      <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
+    )}
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -130,6 +153,8 @@ const fullTitle = normalizedTitle.includes(siteName)
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
   }
 
   body {
@@ -143,12 +168,25 @@ const fullTitle = normalizedTitle.includes(siteName)
     background-size: 400px 400px;
     background-attachment: fixed;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   a {
     color: inherit;
   }
 
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── Header ──────────────────────────────────────────────────────────── */
   .site-header {
     position: sticky;
     top: 0;
@@ -217,6 +255,7 @@ const fullTitle = normalizedTitle.includes(siteName)
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.18);
   }
 
+  /* ── Main ────────────────────────────────────────────────────────────── */
   main {
     max-width: var(--content-width);
     margin: 0 auto;
@@ -247,6 +286,7 @@ const fullTitle = normalizedTitle.includes(siteName)
     box-shadow: var(--shadow-medium);
   }
 
+  /* ── Footer ──────────────────────────────────────────────────────────── */
   .site-footer {
     margin-top: 4rem;
     padding: 2rem 1rem;
@@ -266,6 +306,7 @@ const fullTitle = normalizedTitle.includes(siteName)
     color: #ffffff;
   }
 
+  /* ── CTA bouton global ───────────────────────────────────────────────── */
   .cta-btn {
     display: inline-block;
     margin-top: 1.5rem;
@@ -290,6 +331,7 @@ const fullTitle = normalizedTitle.includes(siteName)
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   }
 
+  /* ── Typographie ─────────────────────────────────────────────────────── */
   h1 {
     margin-bottom: 1rem;
     font-size: 2rem;
@@ -319,6 +361,7 @@ const fullTitle = normalizedTitle.includes(siteName)
     margin-bottom: 0.4rem;
   }
 
+  /* ── Transitions composants ──────────────────────────────────────────── */
   .communes-grid a,
   .ville-card,
   .card,
@@ -337,6 +380,7 @@ const fullTitle = normalizedTitle.includes(siteName)
     transform: translateX(4px);
   }
 
+  /* ── Animations ──────────────────────────────────────────────────────── */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -349,26 +393,17 @@ const fullTitle = normalizedTitle.includes(siteName)
   }
 
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(26, 26, 46, 0.15);
-    }
-    70% {
-      box-shadow: 0 0 0 10px rgba(26, 26, 46, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(26, 26, 46, 0);
-    }
+    0%   { box-shadow: 0 0 0 0 rgba(26, 26, 46, 0.15); }
+    70%  { box-shadow: 0 0 0 10px rgba(26, 26, 46, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(26, 26, 46, 0); }
   }
 
+  /* ── Responsive ──────────────────────────────────────────────────────── */
   @media (max-width: 720px) {
     .header-inner {
       padding: 0.9rem 1rem;
@@ -400,6 +435,13 @@ const fullTitle = normalizedTitle.includes(siteName)
     h2 {
       font-size: 1.25rem;
     }
+  }
+
+  /* ── Accessibilité ───────────────────────────────────────────────────── */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
   @media (prefers-reduced-motion: reduce) {

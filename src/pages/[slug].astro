@@ -44,27 +44,54 @@ const description =
 
 const canonical = `${siteUrl}/${currentSlug}/`;
 
+// ─── Schema TaxiService + LocalBusiness enrichi ───────────────────────────
 const schema = {
   "@context": "https://schema.org",
-  "@type": "TaxiService",
-  "name": `${brandName} — ${nom}`,
+  "@type": ["TaxiService", "LocalBusiness"],
+  "name": `${brandName} — VTC ${nom}`,
   "description": description,
+  "image": `${siteUrl}/og-image.jpg`,
+  "priceRange": "€€",
+  "paymentAccepted": "Carte bancaire, virement",
+  "currenciesAccepted": "EUR",
+  "openingHours": "Mo-Su 00:00-23:59",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": nom,
+    "addressRegion": ville.departement,
+    "postalCode": ville.codePostal,
+    "addressCountry": ville.pays
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": ville.latitude,
+    "longitude": ville.longitude
+  },
   "areaServed": {
     "@type": "City",
-    "name": nom
+    "name": nom,
+    ...(type === 'fille'
+      ? { "containedInPlace": { "@type": "City", "name": ville.nom } }
+      : {}),
   },
   "url": canonical,
+  "sameAs": [`${siteUrl}`],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Réservation VTC en ligne",
-    "url": bookingUrl
+    "url": bookingUrl,
   },
   "potentialAction": {
     "@type": "ReserveAction",
-    "target": bookingUrl
-  }
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": bookingUrl,
+    },
+    "result": { "@type": "Reservation", "name": "Réservation VTC" },
+  },
 };
 
+// ─── Schema FAQ (pages mères uniquement) ──────────────────────────────────
 const schemaFAQ =
   type === 'mere'
     ? {
@@ -75,11 +102,41 @@ const schemaFAQ =
           "name": item.question,
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": item.reponse
-          }
-        }))
+            "text": item.reponse,
+          },
+        })),
       }
     : null;
+
+// ─── Schema BreadcrumbList ─────────────────────────────────────────────────
+const schemaBreadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Accueil",
+      "item": siteUrl,
+    },
+    ...(type === 'fille'
+      ? [
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": `VTC ${ville.nom}`,
+            "item": `${siteUrl}/${ville.slug}/`,
+          },
+        ]
+      : []),
+    {
+      "@type": "ListItem",
+      "position": type === 'fille' ? 3 : 2,
+      "name": `VTC ${nom}`,
+      "item": canonical,
+    },
+  ],
+};
 ---
 
 <BaseLayout
@@ -88,14 +145,45 @@ const schemaFAQ =
   canonical={canonical}
   schema={schema}
   schemaFAQ={schemaFAQ}
+  schemaBreadcrumb={schemaBreadcrumb}
 >
+
+  <!-- ─── Hero ─────────────────────────────────────────────────────────── -->
   <section class="hero-page">
+
+    <!-- Fil d'Ariane HTML (double signal : JSON-LD + microdata) -->
+    <nav aria-label="Fil d'Ariane" class="breadcrumb">
+      <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item"><span itemprop="name">Accueil</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        {type === 'fille' && (
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span aria-hidden="true"> › </span>
+            <a href={`/${ville.slug}/`} itemprop="item">
+              <span itemprop="name">VTC {ville.nom}</span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </li>
+        )}
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span aria-hidden="true"> › </span>
+          <span itemprop="name">VTC {nom}</span>
+          <meta itemprop="position" content={type === 'fille' ? "3" : "2"} />
+        </li>
+      </ol>
+    </nav>
+
     <h1>Chauffeur VTC à {nom} — Réservation en ligne avec tarif annoncé à l'avance</h1>
     <p>
       Besoin d'un transport fiable à <strong>{nom}</strong> ?
-      {brandName} vous accompagne pour vos transferts gare, aéroport,
-      déplacements professionnels, trajets privés et événements, avec
-      réservation 100 % en ligne.
+      {brandName} vous accompagne 7j/7 pour vos transferts vers
+      {type === 'mere'
+        ? `les gares et aéroports d'Île-de-France`
+        : `${ville.nom} et les aéroports parisiens`},
+      vos déplacements professionnels et trajets privés, avec réservation
+      100&nbsp;% en ligne.
     </p>
     <a
       href={bookingUrl}
@@ -109,6 +197,7 @@ const schemaFAQ =
 
   <AppButtons />
 
+  <!-- ─── Intro ville (pages mères uniquement) ─────────────────────────── -->
   {type === 'mere' && (
     <section class="intro-ville">
       <h2>VTC à {ville.nom} avec {brandName}</h2>
@@ -125,6 +214,7 @@ const schemaFAQ =
     </section>
   )}
 
+  <!-- ─── Pourquoi réserver ─────────────────────────────────────────────── -->
   <section>
     <h2>Pourquoi réserver un VTC à {nom} ?</h2>
     <ul>
@@ -138,6 +228,7 @@ const schemaFAQ =
     </ul>
   </section>
 
+  <!-- ─── Comment réserver ─────────────────────────────────────────────── -->
   <section>
     <h2>Comment réserver votre chauffeur VTC à {nom} ?</h2>
     <ol>
@@ -156,6 +247,7 @@ const schemaFAQ =
     </a>
   </section>
 
+  <!-- ─── Communes desservies (pages mères uniquement) ─────────────────── -->
   {type === 'mere' && (
     <section>
       <h2>Communes desservies autour de {ville.nom}</h2>
@@ -164,7 +256,6 @@ const schemaFAQ =
         environnantes. Sélectionnez votre secteur pour accéder à la page
         correspondante.
       </p>
-
       <ul class="communes-grid">
         {ville.communes.map((c) => (
           <li>
@@ -175,14 +266,31 @@ const schemaFAQ =
     </section>
   )}
 
+  <!-- ─── Page fille : secteur + maillage interne voisins ─────────────── -->
   {type === 'fille' && (
     <section>
       <h2>VTC {commune.nom} — secteur {ville.nom}</h2>
       <p>
         {brandName} assure les trajets depuis <strong>{commune.nom}</strong> vers
-        <a href={`/${ville.slug}/`}> {ville.nom}</a>, les gares, les aéroports et
-        les principaux points de destination du secteur, sur réservation préalable.
+        <a href={`/${ville.slug}/`}>{ville.nom}</a>, les gares,
+        les aéroports et les principaux points de destination du secteur,
+        sur réservation préalable.
       </p>
+
+      {ville.communes.filter(c => c.slug !== commune.slug).length > 0 && (
+        <nav aria-label="Communes voisines desservies">
+          <p><strong>Communes voisines également desservies :</strong></p>
+          <ul class="communes-grid">
+            {ville.communes
+              .filter(c => c.slug !== commune.slug)
+              .slice(0, 6)
+              .map(c => (
+                <li><a href={`/${c.slug}/`}>VTC {c.nom}</a></li>
+              ))}
+          </ul>
+        </nav>
+      )}
+
       <a
         href={bookingUrl}
         class="cta-btn"
@@ -194,6 +302,7 @@ const schemaFAQ =
     </section>
   )}
 
+  <!-- ─── FAQ (pages mères uniquement) ─────────────────────────────────── -->
   {type === 'mere' && (
     <section class="faq-section">
       <h2>Questions fréquentes — VTC {ville.nom}</h2>
@@ -212,6 +321,34 @@ const schemaFAQ =
 </BaseLayout>
 
 <style>
+  /* ── Breadcrumb ──────────────────────────────────────────────────────── */
+  .breadcrumb {
+    margin-bottom: 1.25rem;
+  }
+
+  .breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    color: #b0b8cc;
+    justify-content: center;
+  }
+
+  .breadcrumb a {
+    color: #b0b8cc;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .breadcrumb a:hover {
+    color: #ffffff;
+  }
+
+  /* ── Hero ────────────────────────────────────────────────────────────── */
   .hero-page {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: white;
@@ -232,6 +369,7 @@ const schemaFAQ =
     line-height: 1.8;
   }
 
+  /* ── CTA ─────────────────────────────────────────────────────────────── */
   .cta-btn {
     display: inline-block;
     margin-top: 1.5rem;
@@ -252,6 +390,7 @@ const schemaFAQ =
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   }
 
+  /* ── Intro ville ─────────────────────────────────────────────────────── */
   .intro-ville {
     background: #f8faff;
     border-radius: 12px;
@@ -282,6 +421,7 @@ const schemaFAQ =
     color: #333;
   }
 
+  /* ── Communes grid ───────────────────────────────────────────────────── */
   .communes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -308,6 +448,7 @@ const schemaFAQ =
     border-color: #1a1a2e;
   }
 
+  /* ── FAQ ─────────────────────────────────────────────────────────────── */
   .faq-section h2 {
     text-align: center;
     font-size: 1.6rem;
@@ -395,16 +536,11 @@ const schemaFAQ =
   }
 
   @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* ── Responsive ──────────────────────────────────────────────────────── */
   @media (max-width: 720px) {
     .hero-page {
       padding: 2.5rem 1.25rem;
