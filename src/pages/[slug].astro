@@ -1,0 +1,421 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AppButtons from '../components/AppButtons.astro';
+import { villes } from '../data/villes.ts';
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const ville of villes) {
+    paths.push({
+      params: { slug: ville.slug },
+      props: { type: 'mere', ville, commune: null },
+    });
+
+    for (const commune of ville.communes) {
+      paths.push({
+        params: { slug: commune.slug },
+        props: { type: 'fille', ville, commune },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { type, ville, commune } = Astro.props;
+
+const siteUrl = 'https://phonemyvtc.com';
+const bookingUrl = 'https://phonemevtc.libertyorder.fr/estimation';
+const brandName = 'PhoneMyVTC';
+
+const nom = type === 'mere' ? ville.nom : commune.nom;
+const currentSlug = type === 'mere' ? ville.slug : commune.slug;
+
+const title =
+  type === 'mere'
+    ? `VTC ${nom} — Chauffeur privé à ${nom} | ${brandName}`
+    : `VTC ${nom} — Chauffeur privé secteur ${ville.nom} | ${brandName}`;
+
+const description =
+  type === 'mere'
+    ? `Réservez votre chauffeur VTC à ${nom} avec ${brandName}. Tarif communiqué à l'avance, transfert gare, aéroport, trajet professionnel et réservation en ligne.`
+    : `Réservez votre chauffeur VTC à ${nom} avec ${brandName}. Service sur réservation pour vos trajets vers ${ville.nom}, les gares, aéroports et déplacements du quotidien.`;
+
+const canonical = `${siteUrl}/${currentSlug}/`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "TaxiService",
+  "name": `${brandName} — ${nom}`,
+  "description": description,
+  "areaServed": {
+    "@type": "City",
+    "name": nom
+  },
+  "url": canonical,
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Réservation VTC en ligne",
+    "url": bookingUrl
+  },
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": bookingUrl
+  }
+};
+
+const schemaFAQ =
+  type === 'mere'
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": ville.faq.map((item) => ({
+          "@type": "Question",
+          "name": item.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.reponse
+          }
+        }))
+      }
+    : null;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  schema={schema}
+  schemaFAQ={schemaFAQ}
+>
+  <section class="hero-page">
+    <h1>Chauffeur VTC à {nom} — Réservation en ligne avec tarif annoncé à l'avance</h1>
+    <p>
+      Besoin d'un transport fiable à <strong>{nom}</strong> ?
+      {brandName} vous accompagne pour vos transferts gare, aéroport,
+      déplacements professionnels, trajets privés et événements, avec
+      réservation 100 % en ligne.
+    </p>
+    <a
+      href={bookingUrl}
+      class="cta-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Réserver mon VTC à {nom}
+    </a>
+  </section>
+
+  <AppButtons />
+
+  {type === 'mere' && (
+    <section class="intro-ville">
+      <h2>VTC à {ville.nom} avec {brandName}</h2>
+      <p>{ville.intro}</p>
+
+      <div class="points-interet">
+        <strong>Points de prise en charge fréquents à {ville.nom} :</strong>
+        <ul>
+          {ville.pointsInteret.map((p) => (
+            <li>✅ {p}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section>
+    <h2>Pourquoi réserver un VTC à {nom} ?</h2>
+    <ul>
+      <li>✅ Chauffeur professionnel et ponctuel sur réservation</li>
+      <li>✅ Véhicule confortable pour vos trajets privés et professionnels</li>
+      <li>✅ Tarif communiqué avant validation de la réservation</li>
+      <li>✅ Réservation simple et rapide en ligne</li>
+      <li>✅ Transferts vers gares, aéroports, hôtels et lieux d'événements</li>
+      <li>✅ Service adapté aux trajets quotidiens comme aux longues distances</li>
+      <li>✅ Disponibilité selon votre secteur et votre créneau</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Comment réserver votre chauffeur VTC à {nom} ?</h2>
+    <ol>
+      <li>Cliquez sur le bouton de réservation ci-dessous</li>
+      <li>Renseignez votre adresse de départ et votre destination</li>
+      <li>Sélectionnez votre horaire</li>
+      <li>Consultez le tarif proposé puis validez votre réservation</li>
+    </ol>
+    <a
+      href={bookingUrl}
+      class="cta-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Réserver maintenant
+    </a>
+  </section>
+
+  {type === 'mere' && (
+    <section>
+      <h2>Communes desservies autour de {ville.nom}</h2>
+      <p>
+        Notre service VTC couvre {ville.nom} et de nombreuses communes
+        environnantes. Sélectionnez votre secteur pour accéder à la page
+        correspondante.
+      </p>
+
+      <ul class="communes-grid">
+        {ville.communes.map((c) => (
+          <li>
+            <a href={`/${c.slug}/`}>VTC {c.nom}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {type === 'fille' && (
+    <section>
+      <h2>VTC {commune.nom} — secteur {ville.nom}</h2>
+      <p>
+        {brandName} assure les trajets depuis <strong>{commune.nom}</strong> vers
+        <a href={`/${ville.slug}/`}> {ville.nom}</a>, les gares, les aéroports et
+        les principaux points de destination du secteur, sur réservation préalable.
+      </p>
+      <a
+        href={bookingUrl}
+        class="cta-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Réserver mon VTC à {commune.nom}
+      </a>
+    </section>
+  )}
+
+  {type === 'mere' && (
+    <section class="faq-section">
+      <h2>Questions fréquentes — VTC {ville.nom}</h2>
+      <div class="faq-list">
+        {ville.faq.map((item) => (
+          <details class="faq-item">
+            <summary>{item.question}</summary>
+            <p>{item.reponse}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <AppButtons />
+</BaseLayout>
+
+<style>
+  .hero-page {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 3.5rem 2rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .hero-page h1 {
+    color: white;
+  }
+
+  .hero-page p {
+    color: #d7dbe6;
+    max-width: 700px;
+    margin: 1rem auto 0;
+    line-height: 1.8;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 1rem 2.5rem;
+    background: #f5f5f5;
+    color: #1a1a2e;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.05rem;
+    border: 2px solid #cccccc;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  }
+
+  .cta-btn:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .intro-ville {
+    background: #f8faff;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border: 1px solid #dfe7f2;
+  }
+
+  .points-interet {
+    margin-top: 1rem;
+    background: white;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    border: 1px solid #e5ebf5;
+  }
+
+  .points-interet ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.45rem 1rem;
+  }
+
+  .points-interet li {
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .communes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.6rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+  }
+
+  .communes-grid a {
+    display: block;
+    padding: 0.7rem 1rem;
+    background: #f0f4ff;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1a1a2e;
+    font-weight: 500;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .communes-grid a:hover {
+    background: #f7f9fd;
+    border-color: #1a1a2e;
+  }
+
+  .faq-section h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .faq-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .faq-item {
+    background: white;
+    border-radius: 12px;
+    border: 1.5px solid #e0e8f0;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-item:hover {
+    border-color: #1a1a2e;
+    box-shadow: 0 4px 16px rgba(26, 26, 46, 0.08);
+  }
+
+  .faq-item[open] {
+    border-color: #1a1a2e;
+    box-shadow: 0 4px 20px rgba(26, 26, 46, 0.1);
+  }
+
+  .faq-item summary {
+    padding: 1.2rem 1.5rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    gap: 1rem;
+    user-select: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '';
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    background: #f0f4ff;
+    border: 1.5px solid #d0d8f0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.25s ease, background-color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after {
+    transform: rotate(180deg);
+    background-color: #1a1a2e;
+    border-color: #1a1a2e;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+
+  .faq-item[open] summary {
+    border-bottom: 1.5px solid #e0e8f0;
+  }
+
+  .faq-item p {
+    padding: 1.2rem 1.5rem;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin: 0;
+    background: #fafcff;
+    animation: fadeInDown 0.2s ease;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hero-page {
+      padding: 2.5rem 1.25rem;
+    }
+
+    .intro-ville {
+      padding: 1.25rem;
+    }
+
+    .points-interet {
+      padding: 1rem;
+    }
+  }
+</style>

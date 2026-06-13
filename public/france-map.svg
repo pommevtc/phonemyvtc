@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" fill="none">
+  <!-- Contour de la France métropolitaine simplifié -->
+  <path
+    d="M220 40 L260 35 L310 45 L350 38 L390 55 L420 50 L450 70 L465 95 L475 120 L480 150 L490 170 L510 185 L520 210 L510 235 L495 255 L500 280 L490 305 L470 320 L460 345 L440 365 L420 380 L400 400 L375 415 L350 425 L330 440 L310 455 L285 460 L265 450 L245 435 L225 420 L205 405 L185 390 L170 370 L155 350 L145 325 L135 300 L130 275 L125 250 L120 225 L115 200 L120 175 L130 150 L140 130 L150 110 L165 90 L185 70 L200 55 Z"
+    stroke="rgba(26,26,46,0.12)"
+    stroke-width="2"
+    fill="rgba(26,26,46,0.03)"
+  />
+  <!-- Quelques routes principales stylisées -->
+  <!-- Paris → Bordeaux (A10) -->
+  <path d="M310 180 L290 220 L275 265 L265 310 L260 355 L258 390" stroke="rgba(26,26,46,0.08)" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <!-- Paris → Lyon (A6) -->
+  <path d="M310 180 L330 220 L350 260 L365 300 L375 340 L380 370" stroke="rgba(26,26,46,0.08)" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <!-- Paris → Strasbourg (A4) -->
+  <path d="M310 180 L355 175 L390 170 L425 165 L455 160" stroke="rgba(26,26,46,0.08)" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <!-- Paris → Tours (A11) -->
+  <path d="M310 180 L295 205 L280 230 L265 255 L255 275" stroke="rgba(26,26,46,0.08)" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <!-- Bordeaux → Toulouse (A62) -->
+  <path d="M258 390 L275 400 L295 408 L315 412 L335 415 L355 418" stroke="rgba(26,26,46,0.08)" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <!-- Points villes -->
+  <!-- Paris -->
+  <circle cx="310" cy="178" r="5" fill="rgba(233,69,96,0.4)"/>
+  <circle cx="310" cy="178" r="2.5" fill="rgba(233,69,96,0.8)"/>
+  <!-- Bordeaux -->
+  <circle cx="258" cy="392" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="258" cy="392" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Lyon -->
+  <circle cx="380" cy="372" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="380" cy="372" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Strasbourg -->
+  <circle cx="457" cy="158" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="457" cy="158" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Toulouse -->
+  <circle cx="357" cy="420" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="357" cy="420" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Tours -->
+  <circle cx="254" cy="277" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="254" cy="277" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Poitiers -->
+  <circle cx="252" cy="310" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="252" cy="310" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Angoulême -->
+  <circle cx="255" cy="345" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="255" cy="345" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Périgueux -->
+  <circle cx="272" cy="368" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="272" cy="368" r="2" fill="rgba(26,26,46,0.6)"/>
+  <!-- Arcachon -->
+  <circle cx="235" cy="400" r="4" fill="rgba(26,26,46,0.3)"/>
+  <circle cx="235" cy="400" r="2" fill="rgba(26,26,46,0.6)"/>
+</svg>

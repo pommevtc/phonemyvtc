@@ -1,11 +1,442 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import AppButtons from '../components/AppButtons.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { villes } from '../data/villes.ts';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const siteUrl = 'https://phonemyvtc.com';
+const bookingUrl = 'https://phonemevtc.libertyorder.fr/estimation';
+
+const title = "PhoneMyVTC — Chauffeur VTC en France | Réservation en ligne";
+const description = "PhoneMyVTC, votre alternative au taxi partout en France. Chauffeur VTC professionnel disponible 24h/24, 7j/7. Réservation en ligne avec tarif fixe à l'avance.";
+
+const faqAccueil = [
+  {
+    question: "Qu'est-ce qu'un VTC et quelle est la différence avec un taxi ?",
+    reponse:
+      "Un VTC (Véhicule de Tourisme avec Chauffeur) est un service de transport avec chauffeur professionnel réservé uniquement à l'avance via une application ou un module en ligne. Contrairement au taxi, un VTC ne peut pas prendre de clients sur la voie publique ni stationner aux bornes taxis. En revanche, il propose un tarif fixe annoncé avant la course, un véhicule confortable et un chauffeur dédié."
+  },
+  {
+    question: "PhoneMyVTC effectue-t-il des courses conventionnées remboursées par la CPAM ?",
+    reponse:
+      "Non. PhoneMyVTC n'assure pas les transports médicaux conventionnés remboursés par la Sécurité Sociale (CPAM). Pour ce type de transport, nous vous recommandons de contacter un taxi conventionné agréé par l'Assurance Maladie de votre département."
+  },
+  {
+    question: "Comment réserver un VTC avec PhoneMyVTC ?",
+    reponse:
+      "La réservation se fait uniquement en ligne via notre module de réservation. Aucune prise en charge sur la voie publique n'est possible. Indiquez votre adresse de départ, votre destination et votre créneau horaire pour obtenir un tarif fixe immédiat et confirmer votre course."
+  },
+  {
+    question: "Dans quelles villes PhoneMyVTC est-il disponible ?",
+    reponse:
+      "PhoneMyVTC est disponible dans plusieurs grandes villes françaises ainsi que dans leurs communes environnantes. Notre service couvre les transferts vers les aéroports, les gares, les hôtels, les centres-villes et les zones d'activité."
+  },
+  {
+    question: "Puis-je réserver un VTC pour un transfert aéroport ou gare ?",
+    reponse:
+      "Oui, c'est l'une de nos spécialités. Nous assurons les transferts vers et depuis les aéroports, gares et principaux pôles de mobilité de nos villes desservies. Réservez à l'avance pour garantir votre prise en charge."
+  },
+  {
+    question: "PhoneMyVTC est-il disponible la nuit et le week-end ?",
+    reponse:
+      "Oui, notre service est disponible 24h/24 et 7j/7, y compris la nuit, le week-end et les jours fériés, selon disponibilité dans votre secteur."
+  },
+  {
+    question: "Comment fonctionne la tarification chez PhoneMyVTC ?",
+    reponse:
+      "Nous pratiquons des tarifs fixes annoncés avant la validation de la réservation. Vous connaissez le prix de votre course à l'avance, sans mauvaise surprise."
+  }
+];
+
+const schemaFAQ = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqAccueil.map((item) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.reponse
+    }
+  }))
+};
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`${siteUrl}/`}
+  schemaFAQ={schemaFAQ}
+>
+  <section class="hero-home">
+    <div class="hero-home__inner">
+      <span class="hero-home__eyebrow">Réservation VTC en ligne partout en France</span>
+      <h1>Votre chauffeur VTC en France avec PhoneMyVTC</h1>
+      <p>
+        PhoneMyVTC vous propose un service de transport professionnel,
+        confortable et ponctuel dans de nombreuses villes françaises.
+        Réservez en ligne en quelques clics avec un tarif connu à l'avance.
+      </p>
+
+      <div class="hero-home__actions">
+        <a
+          href={bookingUrl}
+          class="cta-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Réserver mon VTC maintenant
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <AppButtons />
+
+  <section class="avantages container-section">
+    <div class="section-heading">
+      <h2>Pourquoi choisir PhoneMyVTC ?</h2>
+      <p>
+        Un service pensé pour les particuliers comme pour les professionnels,
+        avec une réservation simple et un accompagnement fiable.
+      </p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="card-icon" aria-hidden="true">⏱</span>
+        <h3>Ponctualité</h3>
+        <p>Votre chauffeur arrive à l'heure pour chaque prise en charge.</p>
+      </article>
+
+      <article class="card">
+        <span class="card-icon" aria-hidden="true">💳</span>
+        <h3>Tarif fixe</h3>
+        <p>Le prix est communiqué avant la réservation, sans surprise.</p>
+      </article>
+
+      <article class="card">
+        <span class="card-icon" aria-hidden="true">🌙</span>
+        <h3>Disponibilité 24h/24</h3>
+        <p>Un service disponible 7j/7 selon la zone et le créneau demandé.</p>
+      </article>
+
+      <article class="card">
+        <span class="card-icon" aria-hidden="true">📱</span>
+        <h3>Réservation en ligne</h3>
+        <p>Une estimation rapide et une réservation simple depuis votre téléphone.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="villes-section container-section">
+    <div class="section-heading">
+      <h2>Nos villes desservies</h2>
+      <p>Choisissez votre ville pour découvrir votre service VTC local.</p>
+    </div>
+
+    <div class="villes-grid">
+      {villes.map((v) => (
+        <a href={`/${v.slug}/`} class="ville-card">
+          <strong>VTC {v.nom}</strong>
+          <span>{v.region}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="faq-section container-section">
+    <div class="section-heading">
+      <h2>Questions fréquentes sur nos services VTC</h2>
+      <p>
+        Retrouvez les réponses aux questions les plus courantes avant de réserver
+        votre chauffeur.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      {faqAccueil.map((item) => (
+        <details class="faq-item">
+          <summary>{item.question}</summary>
+          <p>{item.reponse}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <AppButtons />
+</BaseLayout>
+
+<style>
+  :global(:root) {
+    --pmv-bg: #f6f8fc;
+    --pmv-surface: #ffffff;
+    --pmv-surface-soft: #eef3fb;
+    --pmv-text: #1a1a2e;
+    --pmv-text-muted: #5f6475;
+    --pmv-border: #dbe3f0;
+    --pmv-primary: #1a1a2e;
+    --pmv-primary-2: #243b6b;
+    --pmv-accent: #e9eef8;
+    --pmv-shadow: 0 10px 30px rgba(20, 29, 58, 0.08);
+    --pmv-radius: 16px;
+    --pmv-radius-sm: 12px;
+    --pmv-width: 1200px;
+  }
+
+  .container-section {
+    width: min(calc(100% - 2rem), var(--pmv-width));
+    margin: 0 auto 4rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(1.7rem, 1.2rem + 1.5vw, 2.2rem);
+    color: var(--pmv-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-heading p {
+    color: var(--pmv-text-muted);
+    max-width: 720px;
+    line-height: 1.7;
+  }
+
+  .hero-home {
+    margin-bottom: 3rem;
+    padding: clamp(3rem, 6vw, 5rem) 1rem;
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at top left, rgba(255, 255, 255, 0.14), transparent 30%),
+      linear-gradient(135deg, var(--pmv-primary) 0%, var(--pmv-primary-2) 100%);
+    color: white;
+    text-align: center;
+  }
+
+  .hero-home__inner {
+    width: min(100%, 900px);
+    margin: 0 auto;
+  }
+
+  .hero-home__eyebrow {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #d9e2ff;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-home h1 {
+    color: white;
+    font-size: clamp(2.1rem, 1.6rem + 2vw, 3.4rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .hero-home p {
+    color: rgba(255, 255, 255, 0.86);
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+
+  .hero-home__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.75rem;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.95rem 1.4rem;
+    border-radius: 999px;
+    background: white;
+    color: var(--pmv-primary);
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    padding: 1.4rem;
+    background: var(--pmv-surface);
+    border: 1px solid var(--pmv-border);
+    border-radius: var(--pmv-radius);
+    box-shadow: var(--pmv-shadow);
+  }
+
+  .card-icon {
+    display: inline-flex;
+    margin-bottom: 0.9rem;
+    font-size: 1.3rem;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    color: var(--pmv-text);
+    margin-bottom: 0.45rem;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--pmv-text-muted);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  .villes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .ville-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1.15rem;
+    background: var(--pmv-surface-soft);
+    border: 1px solid transparent;
+    border-radius: var(--pmv-radius-sm);
+    text-decoration: none;
+    text-align: center;
+    color: var(--pmv-text);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .ville-card strong {
+    font-size: 1rem;
+  }
+
+  .ville-card span {
+    font-size: 0.88rem;
+    color: var(--pmv-text-muted);
+  }
+
+  .ville-card:hover {
+    transform: translateY(-2px);
+    border-color: #bcc9df;
+    background: #f4f7fd;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .faq-item {
+    overflow: hidden;
+    background: var(--pmv-surface);
+    border: 1px solid var(--pmv-border);
+    border-radius: var(--pmv-radius);
+    box-shadow: 0 6px 20px rgba(26, 26, 46, 0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-item:hover,
+  .faq-item[open] {
+    border-color: #b8c6dc;
+    box-shadow: 0 12px 26px rgba(26, 26, 46, 0.08);
+  }
+
+  .faq-item summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.2rem 1.4rem;
+    cursor: pointer;
+    list-style: none;
+    color: var(--pmv-text);
+    font-weight: 600;
+    user-select: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '';
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 999px;
+    border: 1px solid #cfd8e8;
+    background-color: #f3f6fc;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after {
+    transform: rotate(180deg);
+    background-color: var(--pmv-primary);
+    border-color: var(--pmv-primary);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+
+  .faq-item[open] summary {
+    border-bottom: 1px solid #e3eaf5;
+  }
+
+  .faq-item p {
+    margin: 0;
+    padding: 1.15rem 1.4rem;
+    color: var(--pmv-text-muted);
+    line-height: 1.8;
+    background: #fbfcff;
+  }
+
+  @media (max-width: 768px) {
+    .hero-home {
+      border-radius: 18px;
+      padding-inline: 1rem;
+    }
+
+    .hero-home__actions {
+      flex-direction: column;
+    }
+
+    .cta-btn {
+      width: 100%;
+    }
+
+    .faq-item summary,
+    .faq-item p,
+    .card,
+    .ville-card {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+</style>
