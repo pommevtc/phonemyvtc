@@ -50,7 +50,7 @@ const schema = {
   "@type": ["TaxiService", "LocalBusiness"],
   "name": `${brandName} — VTC ${nom}`,
   "description": description,
-  "image": `${siteUrl}/og-image.jpg`,
+  "image": `${siteUrl}/og-image.webp`,
   "priceRange": "€€",
   "paymentAccepted": "Carte bancaire, virement",
   "currenciesAccepted": "EUR",
@@ -60,12 +60,12 @@ const schema = {
     "addressLocality": nom,
     "addressRegion": ville.departement,
     "postalCode": ville.codePostal,
-    "addressCountry": ville.pays
+    "addressCountry": ville.pays,
   },
   "geo": {
     "@type": "GeoCoordinates",
     "latitude": ville.latitude,
-    "longitude": ville.longitude
+    "longitude": ville.longitude,
   },
   "areaServed": {
     "@type": "City",
@@ -151,7 +151,6 @@ const schemaBreadcrumb = {
   <!-- ─── Hero ─────────────────────────────────────────────────────────── -->
   <section class="hero-page">
 
-    <!-- Fil d'Ariane HTML (double signal : JSON-LD + microdata) -->
     <nav aria-label="Fil d'Ariane" class="breadcrumb">
       <ol itemscope itemtype="https://schema.org/BreadcrumbList">
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -180,17 +179,12 @@ const schemaBreadcrumb = {
       Besoin d'un transport fiable à <strong>{nom}</strong> ?
       {brandName} vous accompagne 7j/7 pour vos transferts vers
       {type === 'mere'
-        ? `les gares et aéroports d'Île-de-France`
-        : `${ville.nom} et les aéroports parisiens`},
+        ? `les gares et aéroports`
+        : `${ville.nom} et les aéroports`},
       vos déplacements professionnels et trajets privés, avec réservation
       100&nbsp;% en ligne.
     </p>
-    <a
-      href={bookingUrl}
-      class="cta-btn"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a href={bookingUrl} class="cta-btn" target="_blank" rel="noopener noreferrer">
       Réserver mon VTC à {nom}
     </a>
   </section>
@@ -228,6 +222,31 @@ const schemaBreadcrumb = {
     </ul>
   </section>
 
+  <!-- ─── Trajets fréquents (pages mères uniquement) ───────────────────── -->
+  {type === 'mere' && ville.trajetsFrequents && ville.trajetsFrequents.length > 0 && (
+    <section class="trajets-section">
+      <h2>Trajets fréquents au départ de {ville.nom}</h2>
+      <p>
+        Découvrez les principales destinations assurées par {brandName} depuis
+        {ville.nom}. Chaque trajet est réservable en ligne avec tarif fixe annoncé à l'avance.
+      </p>
+      <div class="trajets-grid">
+        {ville.trajetsFrequents.map((trajet) => (
+          <div class="trajet-card">
+            <div class="trajet-icon" aria-hidden="true">🚗</div>
+            <div class="trajet-content">
+              <strong>{trajet.label}</strong>
+              <p>{trajet.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <a href={bookingUrl} class="cta-btn" target="_blank" rel="noopener noreferrer">
+        Réserver mon trajet depuis {ville.nom}
+      </a>
+    </section>
+  )}
+
   <!-- ─── Comment réserver ─────────────────────────────────────────────── -->
   <section>
     <h2>Comment réserver votre chauffeur VTC à {nom} ?</h2>
@@ -237,12 +256,7 @@ const schemaBreadcrumb = {
       <li>Sélectionnez votre horaire</li>
       <li>Consultez le tarif proposé puis validez votre réservation</li>
     </ol>
-    <a
-      href={bookingUrl}
-      class="cta-btn"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a href={bookingUrl} class="cta-btn" target="_blank" rel="noopener noreferrer">
       Réserver maintenant
     </a>
   </section>
@@ -291,12 +305,7 @@ const schemaBreadcrumb = {
         </nav>
       )}
 
-      <a
-        href={bookingUrl}
-        class="cta-btn"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={bookingUrl} class="cta-btn" target="_blank" rel="noopener noreferrer">
         Réserver mon VTC à {commune.nom}
       </a>
     </section>
@@ -419,6 +428,55 @@ const schemaBreadcrumb = {
   .points-interet li {
     font-size: 0.95rem;
     color: #333;
+  }
+
+  /* ── Trajets fréquents ───────────────────────────────────────────────── */
+  .trajets-section {
+    padding: 2rem;
+  }
+
+  .trajets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .trajet-card {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    background: #f8faff;
+    border: 1px solid #dfe7f2;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .trajet-card:hover {
+    border-color: #1a1a2e;
+    box-shadow: 0 4px 16px rgba(26, 26, 46, 0.08);
+  }
+
+  .trajet-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .trajet-content strong {
+    display: block;
+    color: #1a1a2e;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .trajet-content p {
+    font-size: 0.88rem;
+    color: #5a6278;
+    margin: 0;
+    line-height: 1.6;
   }
 
   /* ── Communes grid ───────────────────────────────────────────────────── */
@@ -552,6 +610,10 @@ const schemaBreadcrumb = {
 
     .points-interet {
       padding: 1rem;
+    }
+
+    .trajets-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

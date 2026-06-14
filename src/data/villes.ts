@@ -10,17 +10,23 @@ export interface Commune {
   slug: string;
 }
 
+export interface TrajetFrequent {
+  label: string;
+  description: string;
+}
+
 export interface Ville {
   nom: string;
   slug: string;
   region: string;
-  departement: string;       // Nouveau — utilisé dans les schemas
-  codePostal: string;        // Nouveau — LocalBusiness schema
-  pays: string;              // Nouveau — LocalBusiness schema
-  latitude: number;          // Nouveau — GeoCoordinates schema
-  longitude: number;         // Nouveau — GeoCoordinates schema
+  departement: string;
+  codePostal: string;
+  pays: string;
+  latitude: number;
+  longitude: number;
   intro: string;
   pointsInteret: string[];
+  trajetsFrequents: TrajetFrequent[];
   faq: FAQItem[];
   communes: Commune[];
 }
@@ -42,6 +48,14 @@ export const villes: Ville[] = [
       "Cité du Vin",
       "Bassin d'Arcachon",
       "Stade Matmut Atlantique"
+    ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Bordeaux-Mérignac", description: "Navette VTC depuis ou vers l'aéroport de Bordeaux-Mérignac, avec prise en charge à domicile et tarif fixe annoncé à l'avance." },
+      { label: "VTC Bordeaux gare Saint-Jean", description: "Transfert en chauffeur privé vers la gare Saint-Jean de Bordeaux pour vos trains TGV et Intercités." },
+      { label: "VTC Bordeaux — Arcachon", description: "Trajet entre Bordeaux et le bassin d'Arcachon, la Dune du Pilat ou Cap Ferret, sans stress ni stationnement." },
+      { label: "Chauffeur privé Bordeaux nuit et week-end", description: "Service VTC disponible en soirée, la nuit et le week-end pour vos sorties, événements et transferts nocturnes à Bordeaux." },
+      { label: "VTC Bordeaux mariage et événements", description: "Mise à disposition d'un chauffeur privé pour votre mariage, soirée d'entreprise ou événement dans la métropole bordelaise." },
+      { label: "Transfert Bordeaux — Paris", description: "VTC longue distance entre Bordeaux et Paris, pour vos déplacements professionnels ou personnels avec confort garanti." }
     ],
     faq: [
       {
@@ -101,6 +115,14 @@ export const villes: Ville[] = [
       "Port ostréicole",
       "Lège-Cap-Ferret"
     ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Mérignac — Arcachon", description: "Navette VTC depuis l'aéroport de Bordeaux-Mérignac jusqu'à Arcachon ou toute commune du bassin, sans attente et tarif fixe." },
+      { label: "VTC Arcachon — Bordeaux", description: "Trajet en chauffeur privé entre Arcachon et Bordeaux pour vos rendez-vous professionnels, la gare Saint-Jean ou l'aéroport." },
+      { label: "Chauffeur privé Dune du Pilat", description: "Transfert vers la Dune du Pilat depuis Arcachon, Bordeaux ou toute adresse du bassin, idéal pour les familles et groupes." },
+      { label: "VTC Cap Ferret — Arcachon", description: "Service de chauffeur privé entre Lège-Cap-Ferret et Arcachon pour vos déplacements sur le bassin." },
+      { label: "Navette Arcachon gare La Teste-de-Buch", description: "Transfert VTC vers la gare de La Teste-de-Buch pour vos trains vers Bordeaux et au-delà." },
+      { label: "VTC Arcachon soirée et week-end", description: "Chauffeur privé disponible en soirée et le week-end pour vos sorties et événements sur le bassin d'Arcachon." }
+    ],
     faq: [
       {
         question: "Quelle est la différence entre un VTC et un taxi à Arcachon ?",
@@ -145,6 +167,14 @@ export const villes: Ville[] = [
       "Presqu'île",
       "Parc OL",
       "Eurexpo"
+    ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Lyon Saint-Exupéry", description: "Navette VTC depuis ou vers l'aéroport Lyon Saint-Exupéry, avec chauffeur professionnel et tarif fixe garanti." },
+      { label: "VTC Lyon gare Part-Dieu", description: "Transfert en chauffeur privé vers la gare de la Part-Dieu pour vos TGV et trains grande ligne au départ de Lyon." },
+      { label: "VTC Lyon Eurexpo", description: "Transport professionnel vers Eurexpo pour vos salons, conférences et événements d'entreprise à Lyon." },
+      { label: "Chauffeur privé Lyon Parc OL", description: "VTC pour vos soirées au Groupama Stadium, matchs et événements sportifs à Décines-Charpieu." },
+      { label: "VTC Lyon — Paris", description: "Transfert longue distance entre Lyon et Paris en chauffeur privé, confortable et au tarif annoncé à l'avance." },
+      { label: "Chauffeur privé Lyon nuit et week-end", description: "Service VTC disponible 7j/7 en soirée et la nuit pour vos sorties, restaurants et événements à Lyon." }
     ],
     faq: [
       {
@@ -199,6 +229,14 @@ export const villes: Ville[] = [
       "Vésunna - Musée gallo-romain",
       "Boulazac Arena"
     ],
+    trajetsFrequents: [
+      { label: "Transfert Périgueux — aéroport Bergerac", description: "Navette VTC entre Périgueux et l'aéroport de Bergerac-Périgord, avec chauffeur professionnel et tarif fixe." },
+      { label: "VTC Périgueux — aéroport Bordeaux-Mérignac", description: "Transfert en chauffeur privé depuis Périgueux vers l'aéroport de Bordeaux-Mérignac pour vos vols nationaux et internationaux." },
+      { label: "VTC Périgueux gare SNCF", description: "Prise en charge à domicile pour vos trains au départ de la gare de Périgueux." },
+      { label: "Chauffeur privé Périgueux — Bordeaux", description: "Trajet longue distance entre Périgueux et Bordeaux en VTC confortable, idéal pour vos rendez-vous professionnels." },
+      { label: "VTC Périgueux — Brive-la-Gaillarde", description: "Transfert en chauffeur privé entre Périgueux et Brive pour vos déplacements dans le Périgord et la Corrèze." },
+      { label: "Chauffeur privé Périgueux événements", description: "Service VTC pour vos mariages, soirées et événements privés dans l'agglomération périgourdine." }
+    ],
     faq: [
       {
         question: "Quelle est la différence entre un VTC et un taxi à Périgueux ?",
@@ -244,6 +282,14 @@ export const villes: Ville[] = [
       "Cathédrale Notre-Dame",
       "Palais de l'Europe",
       "Quartier de la Petite France"
+    ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Strasbourg-Entzheim", description: "Navette VTC depuis ou vers l'aéroport de Strasbourg-Entzheim, avec chauffeur professionnel et prise en charge à domicile." },
+      { label: "VTC Strasbourg gare centrale", description: "Transfert en chauffeur privé vers la gare de Strasbourg pour vos TGV et trains internationaux." },
+      { label: "Chauffeur privé Parlement européen Strasbourg", description: "VTC professionnel pour vos déplacements vers le Parlement européen, le Palais de l'Europe et les institutions européennes." },
+      { label: "VTC Strasbourg — Bâle", description: "Transfert transfrontalier en chauffeur privé entre Strasbourg et Bâle, Mulhouse ou Fribourg-en-Brisgau." },
+      { label: "VTC Strasbourg marché de Noël", description: "Service de chauffeur privé pour visiter le célèbre marché de Noël de Strasbourg depuis votre hôtel ou votre adresse." },
+      { label: "Chauffeur privé Strasbourg nuit et événements", description: "VTC disponible en soirée et la nuit pour vos sorties, dîners d'affaires et événements dans l'Eurométropole." }
     ],
     faq: [
       {
@@ -292,6 +338,14 @@ export const villes: Ville[] = [
       "Université de Poitiers",
       "Parc du Futuroscope"
     ],
+    trajetsFrequents: [
+      { label: "Transfert Poitiers — Futuroscope", description: "Navette VTC entre Poitiers et le Futuroscope pour vos visites en famille ou vos événements d'entreprise au parc." },
+      { label: "VTC Poitiers gare TGV", description: "Transfert en chauffeur privé vers la gare TGV de Poitiers pour vos trains vers Paris, Bordeaux ou La Rochelle." },
+      { label: "VTC Poitiers — aéroport Biard", description: "Navette VTC depuis ou vers l'aéroport de Poitiers-Biard, avec prise en charge à domicile et tarif fixe." },
+      { label: "Chauffeur privé Poitiers — Paris", description: "Transfert longue distance entre Poitiers et Paris en VTC confortable pour vos déplacements professionnels." },
+      { label: "VTC Poitiers — La Rochelle", description: "Trajet en chauffeur privé entre Poitiers et La Rochelle, idéal pour vos rendez-vous ou weekends." },
+      { label: "Chauffeur privé Poitiers soirées et mariages", description: "Service VTC pour vos événements privés, mariages et soirées dans le Grand Poitiers et la Vienne." }
+    ],
     faq: [
       {
         question: "Quelle est la différence entre un VTC et un taxi à Poitiers ?",
@@ -335,6 +389,14 @@ export const villes: Ville[] = [
       "Aéroport Tours Val de Loire",
       "Châteaux de la Loire",
       "Vinci Parc des Expositions"
+    ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Tours Val de Loire", description: "Navette VTC depuis ou vers l'aéroport de Tours Val de Loire, avec chauffeur professionnel et tarif fixe annoncé à l'avance." },
+      { label: "VTC Tours gare Saint-Pierre-des-Corps", description: "Transfert en chauffeur privé vers la gare TGV de Saint-Pierre-des-Corps pour vos trains grande ligne." },
+      { label: "Chauffeur privé châteaux de la Loire", description: "Visite des châteaux de la Loire en VTC depuis Tours : Amboise, Chambord, Chenonceau, Chinon, avec chauffeur dédié à la journée." },
+      { label: "VTC Tours — Paris", description: "Transfert longue distance entre Tours et Paris en chauffeur privé, confortable et au tarif fixe garanti." },
+      { label: "VTC Tours Vinci Parc des Expositions", description: "Transport professionnel vers le Vinci Parc des Expositions de Tours pour vos salons et conférences." },
+      { label: "Chauffeur privé Tours nuit et mariages", description: "Service VTC disponible en soirée et le week-end pour vos mariages, événements et sorties en Touraine." }
     ],
     faq: [
       {
@@ -380,6 +442,14 @@ export const villes: Ville[] = [
       "Circuit de Pau-Arnos",
       "Musée de la bande dessinée"
     ],
+    trajetsFrequents: [
+      { label: "VTC Angoulême — aéroport Bordeaux-Mérignac", description: "Transfert en chauffeur privé depuis Angoulême vers l'aéroport de Bordeaux-Mérignac pour vos vols nationaux et internationaux." },
+      { label: "VTC Angoulême gare SNCF", description: "Prise en charge à domicile pour vos trains TGV au départ de la gare d'Angoulême vers Paris ou Bordeaux." },
+      { label: "Chauffeur privé Angoulême — Cognac", description: "Transfert VTC entre Angoulême et Cognac pour vos visites de chais, rendez-vous professionnels ou événements." },
+      { label: "VTC Angoulême — Bordeaux", description: "Trajet en chauffeur privé entre Angoulême et Bordeaux, idéal pour vos rendez-vous d'affaires ou connexions aéroport." },
+      { label: "VTC Angoulême festival BD", description: "Navette VTC pour le Festival International de la Bande Dessinée d'Angoulême depuis votre hébergement ou la gare." },
+      { label: "Chauffeur privé Angoulême soirées et mariages", description: "Service VTC pour vos événements, mariages et soirées dans le Grand Angoulême et la Charente." }
+    ],
     faq: [
       {
         question: "Quelle est la différence entre un VTC et un taxi à Angoulême ?",
@@ -424,6 +494,16 @@ export const villes: Ville[] = [
       "Gare du Nord",
       "La Défense",
       "Parc des Expositions Villepinte"
+    ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Paris CDG — Roissy", description: "Navette VTC depuis ou vers l'aéroport Roissy-Charles de Gaulle, avec chauffeur professionnel, tarif fixe et suivi de vol." },
+      { label: "VTC Paris — aéroport Orly", description: "Transfert en chauffeur privé vers l'aéroport d'Orly depuis Paris ou la petite couronne, à l'heure et sans stress." },
+      { label: "Chauffeur privé gare du Nord Paris", description: "VTC pour vos trains Eurostar, Thalys et TGV au départ de la gare du Nord à Paris." },
+      { label: "VTC Paris gare Montparnasse", description: "Transfert en chauffeur privé vers la gare Montparnasse pour vos TGV vers Bordeaux, Nantes ou Rennes." },
+      { label: "VTC Paris La Défense", description: "Transport professionnel vers le quartier d'affaires de La Défense pour vos rendez-vous et séminaires d'entreprise." },
+      { label: "Chauffeur privé Paris Villepinte", description: "Navette VTC vers le Parc des Expositions de Paris-Villepinte pour vos salons professionnels et événements." },
+      { label: "VTC Paris nuit et soirées", description: "Chauffeur privé disponible 24h/24 pour vos sorties nocturnes, restaurants, théâtres et événements à Paris." },
+      { label: "VTC Paris — Versailles", description: "Transfert en chauffeur privé entre Paris et Versailles pour vos visites touristiques ou déplacements professionnels." }
     ],
     faq: [
       {
@@ -478,6 +558,14 @@ export const villes: Ville[] = [
       "Cité de l'Espace",
       "Cancéropôle",
       "Parc des Expositions"
+    ],
+    trajetsFrequents: [
+      { label: "Transfert aéroport Toulouse-Blagnac", description: "Navette VTC depuis ou vers l'aéroport Toulouse-Blagnac, avec chauffeur professionnel, suivi de vol et tarif fixe garanti." },
+      { label: "VTC Toulouse gare Matabiau", description: "Transfert en chauffeur privé vers la gare Matabiau de Toulouse pour vos TGV et trains grande ligne." },
+      { label: "Chauffeur privé Toulouse Airbus", description: "VTC professionnel pour vos déplacements vers les sites Airbus de Blagnac, Colomiers et la zone aéronautique toulousaine." },
+      { label: "VTC Toulouse Cité de l'Espace", description: "Transfert en chauffeur privé vers la Cité de l'Espace pour vos visites en famille ou événements d'entreprise." },
+      { label: "VTC Toulouse — Carcassonne", description: "Trajet longue distance entre Toulouse et Carcassonne en chauffeur privé, idéal pour le tourisme ou les déplacements professionnels." },
+      { label: "Chauffeur privé Toulouse nuit et mariages", description: "Service VTC disponible 7j/7 en soirée pour vos sorties, mariages et événements dans la métropole toulousaine." }
     ],
     faq: [
       {
